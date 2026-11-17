@@ -592,6 +592,8 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   .nav-links, .nav-cta .btn-ghost { display: none; }
   .menu-btn { display: block; }
   .features-grid, .steps, .pricing-grid, .info-grid, .values-grid, .perks-grid, .blog-grid, .team-grid { grid-template-columns: 1fr; }
+  .balance-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dash-cards { grid-template-columns: minmax(0, 1fr); }
   section { padding: 72px 0; }
   .hero { padding-top: calc(var(--header-h) + 56px); }
   .hero-layout { grid-template-columns: 1fr; gap: 34px; }
@@ -607,6 +609,8 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   .hero-summary { padding: 23px 20px; }
   .hero-summary-row { align-items: flex-start; font-size: 12px; }
   .hero-summary-row strong { max-width: 48%; font-size: 12px; }
+  .balance-card { padding: 20px 14px; }
+  .balance-card .value { font-size: clamp(20px, 6vw, 26px); }
   .info-card { min-height: 0; }
   .footer-grid { grid-template-columns: 1fr; gap: 28px; }
   .footer-bottom { justify-content: center; text-align: center; }

@@ -126,11 +126,19 @@
     var hasToken = !!(api && api.getToken && api.getToken());
     var navCtas = document.querySelectorAll('.nav-cta');
 
+    function findNavLinks(scope, page) {
+      return scope.querySelectorAll('a[href$="/' + page + '"], a[href$="/' + page + '.html"], a[href="' + page + '.html"], a[href="./' + page + '.html"]');
+    }
+
+    function findNavLink(scope, page) {
+      return scope.querySelector('a[href$="/' + page + '"], a[href$="/' + page + '.html"], a[href="' + page + '.html"], a[href="./' + page + '.html"]');
+    }
+
     navCtas.forEach(function (nav) {
       if (!nav) return;
 
-      var loginLink = nav.querySelector('a[href="login.html"]');
-      var panelLink = nav.querySelector('a[href="dashboard.html"]');
+      var loginLink = findNavLink(nav, 'login');
+      var panelLink = findNavLink(nav, 'dashboard');
       if (hasToken) {
         if (!panelLink) {
           var newPanelLink = document.createElement('a');
@@ -169,10 +177,49 @@
         }
       }
     });
+
+    var mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenu) {
+      var menuLoginLinks = Array.prototype.slice.call(findNavLinks(mobileMenu, 'login'));
+      var menuPanelLinks = Array.prototype.slice.call(findNavLinks(mobileMenu, 'dashboard'));
+      var menuAuthLink = hasToken
+        ? menuPanelLinks[0] || menuLoginLinks[0]
+        : menuLoginLinks[0] || menuPanelLinks[0];
+      if (!menuAuthLink) {
+        menuAuthLink = document.createElement('a');
+        mobileMenu.appendChild(menuAuthLink);
+      }
+
+      menuAuthLink.href = hasToken ? 'dashboard.html' : 'login.html';
+      menuAuthLink.textContent = hasToken ? 'Panelim' : 'Daxil ol';
+      menuLoginLinks.concat(menuPanelLinks).forEach(function (link) {
+        if (link !== menuAuthLink) link.remove();
+      });
+
+      var mobileLogoutLink = mobileMenu.querySelector('[data-mobile-logout-btn]');
+      if (hasToken) {
+        if (!mobileLogoutLink) {
+          mobileLogoutLink = document.createElement('a');
+          mobileLogoutLink.href = 'index.html';
+          mobileLogoutLink.textContent = 'Çıxış';
+          mobileLogoutLink.setAttribute('data-mobile-logout-btn', 'true');
+          mobileLogoutLink.addEventListener('click', async function (event) {
+            event.preventDefault();
+            if (window.NexoraAPI && window.NexoraAPI.logout) await window.NexoraAPI.logout();
+            window.location.href = 'index.html';
+          });
+          mobileMenu.appendChild(mobileLogoutLink);
+        }
+      } else if (mobileLogoutLink) {
+        mobileLogoutLink.remove();
+      }
+    }
   }
 
   syncAuthNavState();
   window.addEventListener('load', syncAuthNavState);
+  var menuButton = document.getElementById('menuBtn');
+  if (menuButton) menuButton.addEventListener('click', syncAuthNavState);
 })();
 
 
