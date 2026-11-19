@@ -77,6 +77,10 @@
           <input class="form-input" type="password" id="regpassword" name="regpassword" placeholder="Minimum 12 simvol" required minlength="12" maxlength="128" autocomplete="new-password" />
         </div>
         <div class="form-group">
+          <label class="form-label" for="confirmPassword">Şifrəni təkrar daxil edin</label>
+          <input class="form-input" type="password" id="confirmPassword" name="confirmPassword" placeholder="Şifrənizi yenidən daxil edin" required maxlength="128" autocomplete="new-password" />
+        </div>
+        <div class="form-group">
           <label class="form-label" for="finCode">FIN kodu</label>
           <input class="form-input" type="text" id="finCode" name="finCode" placeholder="Şəxsiyyət vəsiqəsindəki 7 simvollu FIN" minlength="7" maxlength="7" pattern="[A-Za-z0-9]{7}" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="finCodeHint" required />
           <p class="form-hint" id="finCodeHint">FIN kodu məcburidir. Şəxsiyyət vəsiqənizdə göstərilən 7 hərf və rəqəmi daxil edin.</p>
@@ -170,18 +174,20 @@
       var fullname = document.getElementById('fullname');
       var email = document.getElementById('workemail');
       var password = document.getElementById('regpassword');
+      var confirmPassword = document.getElementById('confirmPassword');
       var phone = document.getElementById('phone');
       var finCode = document.getElementById('finCode');
       var terms = form.querySelector('input[name="terms"]');
       var isValid = true;
 
-      [fullname, email, password, phone, finCode].forEach(function (input) { input.style.borderColor = ''; });
+      [fullname, email, password, confirmPassword, phone, finCode].forEach(function (input) { input.style.borderColor = ''; });
       if (terms) terms.closest('label').style.color = '';
 
       var normalizedPhone = phone ? formatPhoneInput(phone.value) : '';
       if (!fullname.value.trim()) { fullname.style.borderColor = '#ff6b6b'; isValid = false; }
       if (!email.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) { email.style.borderColor = '#ff6b6b'; isValid = false; }
       if (!password.value || password.value.length < 12 || password.value.length > 128) { password.style.borderColor = '#ff6b6b'; isValid = false; }
+      if (!confirmPassword.value || confirmPassword.value !== password.value) { confirmPassword.style.borderColor = '#ff6b6b'; isValid = false; }
       if (!/^\+994\s\d{2}\s\d{3}\s\d{2}\s\d{2}$/.test(normalizedPhone)) { phone.style.borderColor = '#ff6b6b'; isValid = false; }
       if (!/^[A-Za-z0-9]{7}$/.test(finCode.value.trim())) { finCode.style.borderColor = '#ff6b6b'; isValid = false; }
       if (terms && !terms.checked) { terms.closest('label').style.color = '#ff6b6b'; isValid = false; }
