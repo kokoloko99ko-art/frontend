@@ -5,6 +5,9 @@
   command = "node netlify-build.js"
   publish = "."
 
+[build.environment]
+  NEXORA_API_URL = "https://backend-gofx.onrender.com"
+
 # Bütün səhifələr üçün sadə qaydalar
 [[redirects]]
   from = "/*"

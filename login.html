@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="az">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Daxil ol — Nexora</title>
-<meta name="description" content="Nexora hesabınıza daxil olun və hesab məlumatlarınızı idarə edin." />
+<title>Daxil ol — Lightroom</title>
+<meta name="description" content="Lightroom hesabınıza daxil olun və hesab məlumatlarınızı idarə edin." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
@@ -19,18 +19,18 @@
 <header id="header">
   <div class="container nav">
     <a href="index.html" class="logo">
-      <span class="logo-mark">N</span>
-      <span>Nexora</span>
+      <span class="logo-mark">Lr</span>
+      <span>Lightroom</span>
     </a>
     <nav class="nav-links" aria-label="Əsas naviqasiya">
-      <a href="index.html#paketler">Paketlər</a>
+      <a href="index.html#otaqler">Otaqlar</a>
       <a href="index.html#nece-isleyir">Necə işləyir</a>
       <a href="faq.html">FAQ</a>
       <a href="elaqe.html">Əlaqə</a>
     </nav>
     <div class="nav-cta">
       <a href="login.html" class="btn btn-ghost">Daxil ol</a>
-      <a href="index.html#paketler" class="btn btn-primary">Paketi al</a>
+      <a href="index.html#otaqler" class="btn btn-primary">Otaq al</a>
       <button class="menu-btn" id="menuBtn" aria-label="Menyunu aç" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -40,7 +40,7 @@
 
 <!-- ============ MOBILE MENU ============ -->
 <div class="mobile-menu" id="mobileMenu" hidden>
-  <a href="index.html#paketler">Paketlər</a>
+  <a href="index.html#otaqler">Otaqlar</a>
   <a href="index.html#nece-isleyir">Necə işləyir</a>
   <a href="faq.html">FAQ</a>
   <a href="elaqe.html">Əlaqə</a>
@@ -53,8 +53,8 @@
   <div class="container">
     <div class="auth-card reveal visible">
       <a href="index.html" class="logo">
-        <span class="logo-mark">N</span>
-        <span>Nexora</span>
+        <span class="logo-mark">Lr</span>
+        <span>Lightroom</span>
       </a>
       <h2>Xoş gəldiniz!</h2>
       <p class="auth-sub">Hesabınıza daxil olun və gündəlik gəlirinizi izləyin.</p>
@@ -68,13 +68,68 @@
           <label class="form-label" for="password">Şifrə</label>
           <input class="form-input" type="password" id="password" name="password" placeholder="••••••••" required minlength="6" />
         </div>
-        <div class="form-row">
+        <div class="form-row" style="justify-content: space-between;">
           <label><input type="checkbox" name="remember" /> Məni xatırla</label>
+          <a href="#" id="forgotLink" style="font-size: 13.5px; color: var(--accent); font-weight: 600;">Şifrəni unutdum?</a>
         </div>
         <button class="btn btn-primary btn-block btn-lg" type="submit">Daxil ol</button>
       </form>
 
       <p class="auth-alt">Hesabınız yoxdur? <a href="qeydiyyat.html">Pulsuz qeydiyyatdan keçin</a></p>
+
+      <!-- ===== ŞİFRƏ BƏRPASI MODALI ===== -->
+      <div class="reset-backdrop" id="resetBackdrop" hidden>
+        <div class="reset-modal" role="dialog" aria-modal="true" aria-labelledby="resetTitle">
+          <button class="reset-close" id="resetClose" type="button" aria-label="Bağla">×</button>
+
+          <!-- Addım 1: E-poçt -->
+          <div class="reset-step" id="resetStep1">
+            <h3 id="resetTitle">Şifrəni bərpa et</h3>
+            <p class="reset-sub">Hesab e-poçtunuzu daxil edin — 6 rəqəmli bərpa kodu göndərəcəyik.</p>
+            <div class="form-group">
+              <label class="form-label" for="resetEmail">E-poçt</label>
+              <input class="form-input" type="email" id="resetEmail" placeholder="siz@gmail.com" />
+            </div>
+            <button class="btn btn-primary btn-block" id="sendCodeBtn" type="button">Kodu göndər</button>
+          </div>
+
+          <!-- Addım 2: Kod -->
+          <div class="reset-step" id="resetStep2" hidden>
+            <h3>Kodu təsdiqləyin</h3>
+            <p class="reset-sub"><span id="resetEmailEcho"></span> ünvanına göndərilən 6 rəqəmli kodu daxil edin.</p>
+            <div class="form-group">
+              <input class="form-input reset-code-input" type="text" id="resetCode" placeholder="000000" inputmode="numeric" maxlength="6" autocomplete="one-time-code" />
+            </div>
+            <button class="btn btn-primary btn-block" id="verifyCodeBtn" type="button">Təsdiqlə</button>
+            <button class="btn btn-ghost btn-block" id="resendBtn" type="button" style="margin-top: 8px;">Kodu yenidən göndər</button>
+          </div>
+
+          <!-- Addım 3: Yeni şifrə -->
+          <div class="reset-step" id="resetStep3" hidden>
+            <h3>Yeni şifrə</h3>
+            <p class="reset-sub">Hesabınız üçün yeni şifrə təyin edin.</p>
+            <div class="form-group">
+              <label class="form-label" for="newPassword">Yeni şifrə</label>
+              <input class="form-input" type="password" id="newPassword" placeholder="Minimum 12 simvol" minlength="12" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="newPassword2">Şifrəni təkrar daxil edin</label>
+              <input class="form-input" type="password" id="newPassword2" placeholder="Şifrəni yenidən daxil edin" />
+            </div>
+            <button class="btn btn-primary btn-block" id="savePasswordBtn" type="button">Şifrəni yenilə</button>
+          </div>
+
+          <!-- Addım 4: Uğur -->
+          <div class="reset-step" id="resetStep4" hidden>
+            <div class="reset-success-icon">✓</div>
+            <h3>Şifrə yeniləndi!</h3>
+            <p class="reset-sub">Şifrəniz uğurla dəyişdirildi. İndi yeni şifrə ilə daxil ola bilərsiniz.</p>
+            <button class="btn btn-primary btn-block" id="resetDoneBtn" type="button">Daxil olmaya keç</button>
+          </div>
+
+          <p class="reset-alert" id="resetAlert" hidden></p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -85,14 +140,14 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="logo">
-          <span class="logo-mark">N</span>
-          <span>Nexora</span>
+          <span class="logo-mark">Lr</span>
+          <span>Lightroom</span>
         </a>
-        <p>Gündəlik gəlir əldə etməyin sadə və etibarlı yolu. Paket seçin, investisiya edin, hər gün qazanın.</p>
+        <p>Gündəlik gəlir əldə etməyin sadə və etibarlı yolu. Otaq seçin, investisiya edin, hər gün qazanın.</p>
       </div>
       <div class="footer-col">
         <h4>Platforma</h4>
-        <a href="index.html#paketler">Paketlər</a>
+        <a href="index.html#otaqler">Otaqlar</a>
         <a href="index.html#nece-isleyir">Necə işləyir</a>
         <a href="index.html#reyler">Məlumatlar</a>
       </div>
@@ -103,13 +158,11 @@
       </div>
       <div class="footer-col">
         <h4>Əlaqə</h4>
-        <a href="elaqe.html">hello@nexora.az</a>
-        <a href="elaqe.html">+994 12 555 55 55</a>
-        <a href="elaqe.html">Nizami küç. 180, Bakı</a>
+        <a href="https://t.me/john_nexo" target="_blank" rel="noopener noreferrer">Telegram-da yazın</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© <span id="year">2026</span> Nexora. Bütün hüquqlar qorunur.</p>
+      <p>© <span id="year">2026</span> Lightroom. Bütün hüquqlar qorunur.</p>
       <p><a href="mexfilik.html">Məxfilik siyasəti</a> &nbsp;·&nbsp; <a href="istifade-sertleri.html">İstifadə şərtləri</a></p>
     </div>
   </div>
@@ -164,6 +217,119 @@
         form.insertBefore(alertEl, form.firstChild);
         setTimeout(function () { if (alertEl.parentNode) alertEl.remove(); }, 4000);
       }
+    });
+  })();
+
+  // ===== ŞİFRƏ BƏRPASI =====
+  (function () {
+    var backdrop = document.getElementById('resetBackdrop');
+    if (!backdrop) return;
+    var steps = { 1: document.getElementById('resetStep1'), 2: document.getElementById('resetStep2'), 3: document.getElementById('resetStep3'), 4: document.getElementById('resetStep4') };
+    var alertEl = document.getElementById('resetAlert');
+    var resetEmail = '';
+    var resetTokenVerified = false;
+
+    function showStep(n) {
+      Object.keys(steps).forEach(function (k) { steps[k].hidden = Number(k) !== n; });
+      alertEl.hidden = true;
+    }
+    function showAlert(msg) {
+      alertEl.textContent = msg;
+      alertEl.hidden = false;
+      alertEl.className = 'reset-alert error';
+      setTimeout(function () { alertEl.hidden = true; }, 5000);
+    }
+    function showInfo(msg) {
+      alertEl.textContent = msg;
+      alertEl.hidden = false;
+      alertEl.className = 'reset-alert success';
+    }
+    function busy(btn, on, text) {
+      if (on) { btn.dataset.t = btn.textContent; btn.disabled = true; btn.textContent = text; }
+      else { btn.disabled = false; btn.textContent = btn.dataset.t || btn.textContent; }
+    }
+
+    function openModal() {
+      resetEmail = '';
+      document.getElementById('resetEmail').value = '';
+      document.getElementById('resetCode').value = '';
+      showStep(1);
+      backdrop.hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      backdrop.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('forgotLink').addEventListener('click', function (e) { e.preventDefault(); openModal(); });
+    document.getElementById('resetClose').addEventListener('click', closeModal);
+    backdrop.addEventListener('click', function (e) { if (e.target === backdrop) closeModal(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !backdrop.hidden) closeModal(); });
+
+    async function sendCode() {
+      var input = document.getElementById('resetEmail');
+      var val = input.value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) { showAlert('Düzgün e-poçt ünvanı daxil edin.'); return; }
+      resetEmail = val.toLowerCase();
+      var btn = document.getElementById('sendCodeBtn');
+      try {
+        busy(btn, true, 'Göndərilir...');
+        await window.NexoraAPI.detect();
+        if (!window.NexoraAPI.isUp()) throw new Error('Server işə düşməyib. Bir az sonra yenidən yoxlayın.');
+        await window.NexoraAPI.forgotPassword(resetEmail);
+        document.getElementById('resetEmailEcho').textContent = resetEmail;
+        showStep(2);
+        showInfo('Kod göndərildi. Spamları da yoxlayın.');
+      } catch (err) {
+        showAlert(err.message === 'offline' ? 'Server işə düşməyib.' : err.message);
+      } finally { busy(btn, false); }
+    }
+
+    document.getElementById('sendCodeBtn').addEventListener('click', sendCode);
+    document.getElementById('resetEmail').addEventListener('keydown', function (e) { if (e.key === 'Enter') sendCode(); });
+
+    document.getElementById('resendBtn').addEventListener('click', async function () {
+      var btn = this;
+      try {
+        busy(btn, true, 'Göndərilir...');
+        await window.NexoraAPI.forgotPassword(resetEmail);
+        showInfo('Yeni kod göndərildi.');
+      } catch (err) { showAlert(err.message); }
+      finally { busy(btn, false); }
+    });
+
+    document.getElementById('verifyCodeBtn').addEventListener('click', async function () {
+      var code = document.getElementById('resetCode').value.trim();
+      if (!/^\d{6}$/.test(code)) { showAlert('6 rəqəmli kodu daxil edin.'); return; }
+      var btn = this;
+      try {
+        busy(btn, true, 'Yoxlanır...');
+        await window.NexoraAPI.verifyResetCode(resetEmail, code);
+        resetTokenVerified = true;
+        showStep(3);
+      } catch (err) { showAlert(err.message); }
+      finally { busy(btn, false); }
+    });
+
+    document.getElementById('savePasswordBtn').addEventListener('click', async function () {
+      var p1 = document.getElementById('newPassword');
+      var p2 = document.getElementById('newPassword2');
+      if (!p1.value || p1.value.length < 12) { showAlert('Şifrə minimum 12 simvol olmalıdır.'); return; }
+      if (p1.value !== p2.value) { showAlert('Şifrələr üst-üstə düşmür.'); return; }
+      var btn = this;
+      try {
+        busy(btn, true, 'Yadda saxlanılır...');
+        await window.NexoraAPI.resetPassword(resetEmail, document.getElementById('resetCode').value.trim(), p1.value);
+        showStep(4);
+      } catch (err) { showAlert(err.message); }
+      finally { busy(btn, false); }
+    });
+
+    document.getElementById('resetDoneBtn').addEventListener('click', function () {
+      closeModal();
+      document.getElementById('email').value = resetEmail;
+      document.getElementById('password').focus();
     });
   })();
 </script>
