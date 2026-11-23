@@ -280,7 +280,7 @@
         await window.NexoraAPI.forgotPassword(resetEmail);
         document.getElementById('resetEmailEcho').textContent = resetEmail;
         showStep(2);
-        showInfo('Kod göndərildi. Spamları da yoxlayın.');
+        showInfo('Sorğu qəbul edildi. Əgər bu e-poçt hesabla bağlıdırsa, kod göndəriləcək. Gəlməsə, Spam/Junk qovluğunu da yoxlayın.');
       } catch (err) {
         showAlert(err.message === 'offline' ? 'Server işə düşməyib.' : err.message);
       } finally { busy(btn, false); }
@@ -294,7 +294,7 @@
       try {
         busy(btn, true, 'Göndərilir...');
         await window.NexoraAPI.forgotPassword(resetEmail);
-        showInfo('Yeni kod göndərildi.');
+        showInfo('Sorğu qəbul edildi. Əgər bu e-poçt hesabla bağlıdırsa, yeni kod göndəriləcək.');
       } catch (err) { showAlert(err.message); }
       finally { busy(btn, false); }
     });
