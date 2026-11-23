@@ -126,20 +126,11 @@
     var hasToken = !!(api && api.getToken && api.getToken());
     var navCtas = document.querySelectorAll('.nav-cta');
 
-    function findNavLink(scope, page) {
-      // Netlify .html-i pretty URL-ə çevirir (/login), ona görə sonluğa görə axtar
-      return scope.querySelector('a[href$="/' + page + '"], a[href$="/' + page + '.html"], a[href="' + page + '.html"], a[href="./' + page + '.html"]');
-    }
-
-    function findNavLinks(scope, page) {
-      return scope.querySelectorAll('a[href$="/' + page + '"], a[href$="/' + page + '.html"], a[href="' + page + '.html"], a[href="./' + page + '.html"]');
-    }
-
     navCtas.forEach(function (nav) {
       if (!nav) return;
 
-      var loginLink = findNavLink(nav, 'login');
-      var panelLink = findNavLink(nav, 'dashboard');
+      var loginLink = nav.querySelector('a[href="login.html"]');
+      var panelLink = nav.querySelector('a[href="dashboard.html"]');
       if (hasToken) {
         if (!panelLink) {
           var newPanelLink = document.createElement('a');
@@ -178,50 +169,10 @@
         }
       }
     });
-
-    // Mobil menyunu da sinxronla (statik "Daxil ol" linki sessiya vəziyyətinə uyğun dəyişsin)
-    var mobileMenu = document.getElementById('mobileMenu');
-    if (mobileMenu) {
-      var menuLoginLinks = Array.prototype.slice.call(findNavLinks(mobileMenu, 'login'));
-      var menuPanelLinks = Array.prototype.slice.call(findNavLinks(mobileMenu, 'dashboard'));
-      var menuAuthLink = hasToken
-        ? menuPanelLinks[0] || menuLoginLinks[0]
-        : menuLoginLinks[0] || menuPanelLinks[0];
-      if (!menuAuthLink) {
-        menuAuthLink = document.createElement('a');
-        mobileMenu.appendChild(menuAuthLink);
-      }
-
-      menuAuthLink.href = hasToken ? 'dashboard.html' : 'login.html';
-      menuAuthLink.textContent = hasToken ? 'Panelim' : 'Daxil ol';
-      menuLoginLinks.concat(menuPanelLinks).forEach(function (link) {
-        if (link !== menuAuthLink) link.remove();
-      });
-
-      var mobileLogoutLink = mobileMenu.querySelector('[data-mobile-logout-btn]');
-      if (hasToken) {
-        if (!mobileLogoutLink) {
-          mobileLogoutLink = document.createElement('a');
-          mobileLogoutLink.href = 'index.html';
-          mobileLogoutLink.textContent = 'Çıxış';
-          mobileLogoutLink.setAttribute('data-mobile-logout-btn', 'true');
-          mobileLogoutLink.addEventListener('click', async function (event) {
-            event.preventDefault();
-            if (window.NexoraAPI && window.NexoraAPI.logout) await window.NexoraAPI.logout();
-            window.location.href = 'index.html';
-          });
-          mobileMenu.appendChild(mobileLogoutLink);
-        }
-      } else if (mobileLogoutLink) {
-        mobileLogoutLink.remove();
-      }
-    }
   }
 
   syncAuthNavState();
   window.addEventListener('load', syncAuthNavState);
-  var menuButton = document.getElementById('menuBtn');
-  if (menuButton) menuButton.addEventListener('click', syncAuthNavState);
 })();
 
 
@@ -235,12 +186,11 @@
   if (window.NexoraAPI && window.NexoraAPI.detect) window.NexoraAPI.detect();
 
   var NEXORA_PLANS = [
-    { name: 'Başlanğıc Otaq', price: 13, daily: 1 },
-    { name: 'Standart Otaq', price: 30, daily: 2 },
-    { name: 'Biznes Otaq', price: 67, daily: 4 },
-    { name: 'Premium Otaq', price: 96, daily: 6 },
-    { name: 'Elit Otaq', price: 200, daily: 14 },
-    { name: 'Elit Plus Otaq', price: 460, daily: 40 }
+    { name: 'Başlanğıc', price: 13, daily: 1 },
+    { name: 'Standart', price: 30, daily: 2 },
+    { name: 'Biznes', price: 67, daily: 4 },
+    { name: 'Premium', price: 96, daily: 6 },
+    { name: 'Elit', price: 200, daily: 14 }
   ];
 
   var state = {
@@ -438,7 +388,7 @@
 
               <!-- Package Picker Chips -->
               <div>
-                <div class="plan-picker-title">Otaq Seçimi</div>
+                <div class="plan-picker-title">Paket Seçimi</div>
                 <div class="plan-picker-grid" id="planPickerGrid">
                   <!-- Dynamically rendered -->
                 </div>
@@ -464,7 +414,7 @@
 
               <div class="summary-details">
                 <div class="summary-row">
-                  <span>Otaq qiyməti</span>
+                  <span>Paket qiyməti</span>
                   <span id="summaryPriceText">₼30.00</span>
                 </div>
                 <div class="summary-row" id="discountRow" style="display: none; color: var(--accent);">
@@ -513,7 +463,7 @@
               <div class="pay-success-icon">✓</div>
               <h3 style="font-size: 26px; margin-bottom: 8px; color: #fff;">Ödəniş Uğurla Tamamlandı!</h3>
               <p style="color: var(--text-dim); font-size: 15px; max-width: 440px; margin-bottom: 24px;">
-                Təbriklər! <strong id="successPlanName" style="color: var(--accent);">Standart</strong> otağıniz aktivləşdirildi və ilk gündəlik gəlir məbləği balansa yazılacaq.
+                Təbriklər! <strong id="successPlanName" style="color: var(--accent);">Standart</strong> paketiniz aktivləşdirildi və ilk gündəlik gəlir məbləği balansa yazılacaq.
               </p>
               <div style="background: var(--card); border: 1px solid var(--border); padding: 18px 24px; border-radius: 14px; margin-bottom: 24px; text-align: left; width: 100%; max-width: 400px;">
                 <div class="summary-row" style="margin-bottom: 8px;"><span>Tranzaksiya ID:</span><strong style="color: #fff;" id="successTxnId">#NX-892104</strong></div>
@@ -740,10 +690,10 @@
       var successTxnAmount = document.getElementById('successTxnAmount');
       if (result.autoApproveInSeconds) {
         if (successTitle) successTitle.textContent = 'Test qəbzi qəbul edildi';
-        if (successCopy) successCopy.textContent = 'Test rejimində otaq 60 saniyə sonra avtomatik aktivləşəcək. İlk gündəlik məbləğ təsdiq zamanı balansa yazılacaq.';
+        if (successCopy) successCopy.textContent = 'Test rejimində paket 60 saniyə sonra avtomatik aktivləşəcək. İlk gündəlik məbləğ təsdiq zamanı balansa yazılacaq.';
       } else {
         if (successTitle) successTitle.textContent = 'Qəbz yoxlamaya göndərildi';
-        if (successCopy) successCopy.textContent = 'Ödəniş təsdiqlənəndən sonra otaq aktivləşdiriləcək və ilk gündəlik məbləğ balansa yazılacaq.';
+        if (successCopy) successCopy.textContent = 'Ödəniş təsdiqlənəndən sonra paket aktivləşdiriləcək və ilk gündəlik məbləğ balansa yazılacaq.';
       }
       if (successPlanName) successPlanName.textContent = state.plan.name;
       if (successDailyRate) successDailyRate.textContent = '+' + state.plan.daily + '₼ / gün';
@@ -1072,8 +1022,8 @@
         var dNum = parseInt(dailyEl.textContent.replace(/\D/g, ''), 10);
         if (!isNaN(dNum)) daily = dNum;
       }
-    } else if (target.getAttribute('href') === 'index.html#otaqler' || target.getAttribute('href') === 'qeydiyyat.html') {
-      if (target.textContent.toLowerCase().indexOf('otağı al') !== -1 || target.textContent.toLowerCase().indexOf('yeni otaq al') !== -1) {
+    } else if (target.getAttribute('href') === 'index.html#paketler' || target.getAttribute('href') === 'qeydiyyat.html') {
+      if (target.textContent.toLowerCase().indexOf('paketi al') !== -1 || target.textContent.toLowerCase().indexOf('yeni paket al') !== -1) {
         isBuyBtn = true;
       }
     }
