@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="az">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https:; base-uri 'self'; form-action 'self'; object-src 'none'" />
-<title>Mənim panelim — Lixup</title>
-<meta name="description" content="Lixup istifadəçi paneli — balansınızı və hesab məlumatlarınızı izləyin." />
+<title>Mənim panelim — Lightroom</title>
+<meta name="description" content="Lightroom istifadəçi paneli — balansınızı və hesab məlumatlarınızı izləyin." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
@@ -21,18 +21,18 @@
 <header id="header">
   <div class="container nav">
     <a href="index.html" class="logo">
-      <span class="logo-mark">L</span>
-      <span>Lixup</span>
+      <span class="logo-mark">Lr</span>
+      <span>Lightroom</span>
     </a>
     <nav class="nav-links" aria-label="Əsas naviqasiya">
-      <a href="index.html#paketler">Paketlər</a>
+      <a href="index.html#otaqler">Otaqlar</a>
       <a href="index.html#nece-isleyir">Necə işləyir</a>
       <a href="faq.html">FAQ</a>
       <a href="elaqe.html">Əlaqə</a>
     </nav>
     <div class="nav-cta">
       <a href="dashboard.html" class="btn btn-ghost">Panelim</a>
-      <a href="index.html#paketler" class="btn btn-primary">Paketi al</a>
+      <a href="index.html#otaqler" class="btn btn-primary">Otaq al</a>
       <button class="menu-btn" id="menuBtn" aria-label="Menyunu aç" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -42,22 +42,22 @@
 
 <!-- ============ MOBILE MENU ============ -->
 <div class="mobile-menu" id="mobileMenu" hidden>
-  <a href="index.html#paketler">Paketlər</a>
+  <a href="index.html#otaqler">Otaqlar</a>
   <a href="index.html#nece-isleyir">Necə işləyir</a>
   <a href="faq.html">FAQ</a>
   <a href="elaqe.html">Əlaqə</a>
   <a href="login.html">Daxil ol</a>
-  <a href="index.html#paketler" style="color: var(--accent);">Paketi al</a>
+  <a href="index.html#otaqler" style="color: var(--accent);">Otaq al</a>
 </div>
 
 <!-- ============ DASHBOARD ============ -->
 <section class="dash-section">
   <div class="container">
     <div class="dash-head reveal visible">
-      <h1>Xoş gəldiniz, <span class="grad-text" id="dashUserName">Elvin!</span></h1>
+      <h1>Xoş gəldiniz, <span class="grad-text" id="dashUserName">İstifadəçi!</span></h1>
       <div class="user-chip">
-        <span class="dash-avatar">E</span>
-        Elvin Məmmədov
+        <span class="dash-avatar" id="dashAvatar">?</span>
+        <span id="dashFullName">Qonaq istifadəçi</span>
       </div>
     </div>
 
@@ -74,9 +74,9 @@
         <div class="sub">Avtomatik hesablanır</div>
       </div>
       <div class="balance-card reveal visible reveal-delay-2">
-        <div class="label">Aktiv paketlər</div>
+        <div class="label">Aktiv otaqlar</div>
         <div class="value" id="activePlans">0</div>
-        <div class="sub">Aktiv investisiyalar</div>
+        <div class="sub">Hal-hazırda aktiv</div>
       </div>
       <div class="balance-card reveal visible reveal-delay-3">
         <div class="label">Ümumi gəlir</div>
@@ -130,21 +130,17 @@
     <div class="dash-cards">
       <!-- Active plans -->
       <div class="dash-panel reveal visible">
-        <h3>Aktiv paketlərim</h3>
+        <h3>Aktiv otaqlarım</h3>
         <div id="activePlansList">
-          <div class="active-plan" id="activePlanDemo">
-            <div>
-              <div class="plan-name">Standart · 30₼</div>
-              <div class="plan-meta">Aktivləşmə: 12 Avqust 2026</div>
-            </div>
-            <span class="tag">AKTİV</span>
+          <div class="active-plan-empty" id="activePlansEmpty" hidden>
+            <p style="font-size:14px;color:var(--text-dim);line-height:1.6;margin-bottom:14px;">Hələ aktiv otağınız yoxdur. Ödəniş təsdiqlənəndə otağınız burada görünəcək.</p>
           </div>
         </div>
         <div class="earn-rate">
           <span style="font-size: 14px; color: var(--text-dim);">Ümumi gündəlik gəlir</span>
-          <span class="big" id="totalDailyRate">+₼2 / gün</span>
+          <span class="big" id="totalDailyRate">+₼0 / gün</span>
         </div>
-        <a href="index.html#paketler" class="btn btn-ghost btn-block">Yeni paket al</a>
+        <a href="index.html#otaqler" class="btn btn-ghost btn-block">Yeni otaq al</a>
       </div>
 
       <!-- Earnings history -->
@@ -163,14 +159,14 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="logo">
-          <span class="logo-mark">L</span>
-          <span>Lixup</span>
+          <span class="logo-mark">Lr</span>
+          <span>Lightroom</span>
         </a>
-        <p>Gündəlik gəlir əldə etməyin sadə və etibarlı yolu. Paket seçin, investisiya edin, hər gün qazanın.</p>
+        <p>Gündəlik gəlir əldə etməyin sadə və etibarlı yolu. Otaq seçin, investisiya edin, hər gün qazanın.</p>
       </div>
       <div class="footer-col">
         <h4>Platforma</h4>
-        <a href="index.html#paketler">Paketlər</a>
+        <a href="index.html#otaqler">Otaqlar</a>
         <a href="index.html#nece-isleyir">Necə işləyir</a>
         <a href="faq.html">FAQ</a>
       </div>
@@ -185,7 +181,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© <span id="year">2026</span> Lixup. Bütün hüquqlar qorunur.</p>
+      <p>© <span id="year">2026</span> Lightroom. Bütün hüquqlar qorunur.</p>
       <p><a href="mexfilik.html">Məxfilik siyasəti</a> &nbsp;·&nbsp; <a href="istifade-sertleri.html">İstifadə şərtləri</a></p>
     </div>
   </div>
@@ -195,7 +191,7 @@
 <script src="api.js"></script>
 <script src="script.js"></script>
 <script>
-  // Demo məlumatlarla və ödənilmiş paketlə balans hesablanması
+  // Demo məlumatlarla və ödənilmiş otaqla balans hesablanması
   // Backend işə düşəndə real bazadan məlumat gəlir, yoxdursa localStorage demo.
   (async function () {
     var api = window.NexoraAPI;
@@ -280,7 +276,7 @@
       }
     }
 
-    var plan = { name: 'Standart', price: 30, daily: 2, activatedAt: '2026-08-12T00:00:00.000Z' };
+    var plan = { name: 'Aktiv otaq yoxdur', price: 0, daily: 0, activatedAt: '' };
     try {
       var saved = localStorage.getItem('nexora_active_plan');
       if (saved) {
@@ -291,7 +287,7 @@
       }
     } catch (e) {}
 
-    var daysActive = 4;
+    var daysActive = 0;
     var totalEarned = plan.daily * daysActive;
     var totalBalance = totalEarned;
     var serverData = null;
@@ -301,18 +297,19 @@
         serverData = await api.me();
         // User name in header
         var nameEl = document.getElementById('dashUserName');
-        var chipEl = document.querySelector('.user-chip');
+        var avatarEl = document.getElementById('dashAvatar');
+        var fullNameEl = document.getElementById('dashFullName');
         var first = (serverData.user.fullname || '').split(' ')[0] || 'İstifadəçi';
         if (nameEl) nameEl.textContent = first + '!';
-        if (chipEl) {
-          var chipText = chipEl.lastChild;
-          if (chipText && chipText.nodeType === 3) chipText.textContent = ' ' + serverData.user.fullname;
-        }
+        if (fullNameEl) fullNameEl.textContent = serverData.user.fullname || 'İstifadəçi';
+        if (avatarEl) avatarEl.textContent = (first[0] || '?').toUpperCase();
         if (serverData.purchases && serverData.purchases.length) {
           renderActivePlans(serverData.purchases);
           plan = { name: serverData.purchases[0].plan_name, price: serverData.purchases[0].price, daily: serverData.purchases[0].daily, activatedAt: serverData.purchases[0].created_at, earning_starts_at: serverData.purchases[0].earning_starts_at };
         } else {
-          plan = { name: 'Aktiv paket yoxdur', price: 0, daily: 0, activatedAt: '' };
+          plan = { name: 'Aktiv otaq yoxdur', price: 0, daily: 0, activatedAt: '' };
+          var emptyEl = document.getElementById('activePlansEmpty');
+          if (emptyEl) emptyEl.hidden = false;
         }
         totalEarned = serverData.totalEarned;
         totalBalance = serverData.balance;
@@ -326,11 +323,9 @@
 
     document.getElementById('totalBalance').textContent = '₼' + totalBalance.toFixed(2);
     document.getElementById('todayEarning').textContent = '₼' + currentDailyTotal(serverData && serverData.purchases).toFixed(2);
-    if (!usingBackend) document.getElementById('activePlans').textContent = '1';
+    document.getElementById('activePlans').textContent = usingBackend && serverData ? String(serverData.purchases.length) : (plan.price ? '1' : '0');
     document.getElementById('totalEarned').textContent = '₼' + totalEarned.toFixed(2);
 
-    var planNameEl = document.querySelector('#activePlansList .active-plan .plan-name');
-    var planMetaEl = document.querySelector('#activePlansList .active-plan .plan-meta');
     var earnRateEl = document.getElementById('totalDailyRate');
     function renderActivePlans(purchases) {
       var listEl = document.getElementById('activePlansList');
@@ -373,13 +368,9 @@
 
     if (usingBackend && serverData && serverData.purchases) {
       renderActivePlans(serverData.purchases);
-    } else if (planNameEl) {
-      planNameEl.textContent = plan.price ? plan.name + ' · ' + plan.price + '₼' : (plan.name || 'Standart');
-      if (planMetaEl) {
-        planMetaEl.textContent = plan.activatedAt
-          ? (isPlanEarning(plan) ? 'Gündəlik gəlir aktivdir' : 'Gəlir başlayacaq: ' + formatDate(getPlanEarningStartAt(plan)))
-          : 'Təsdiqlənmiş paket yoxdur';
-      }
+    } else {
+      var emptyEl = document.getElementById('activePlansEmpty');
+      if (emptyEl && !plan.price) emptyEl.hidden = false;
     }
     if (!usingBackend && earnRateEl) earnRateEl.textContent = '+₼' + currentDailyTotal().toFixed(2) + ' / gün';
 
@@ -632,7 +623,7 @@
             var activePlan = serverData.purchases[0];
             plan = { name: activePlan.plan_name, price: activePlan.price, daily: activePlan.daily, activatedAt: activePlan.created_at, earning_starts_at: activePlan.earning_starts_at };
           } else {
-            plan = { name: 'Aktiv paket yoxdur', price: 0, daily: 0, activatedAt: '' };
+            plan = { name: 'Aktiv otaq yoxdur', price: 0, daily: 0, activatedAt: '' };
           }
           document.getElementById('totalBalance').textContent = '₼' + totalBalance.toFixed(2);
           document.getElementById('totalEarned').textContent = '₼' + totalEarned.toFixed(2);

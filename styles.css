@@ -1512,21 +1512,212 @@ footer {
   background: rgba(139,232,182,.08);
 }
 
-#paketler {
+#paketler, #otaqler {
   background: linear-gradient(180deg, #f0f6f1 0%, #f8faf8 100%);
 }
 .pricing-grid {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
 }
 .pricing-grid > .price-card:last-child { grid-column: auto; }
 .price-card {
   min-width: 0;
-  padding: 28px 20px;
-  border-radius: 20px;
+  padding: 30px 26px;
+  border-radius: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   box-shadow: 0 16px 38px -32px rgba(18,50,35,.48);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
-.price-card:nth-child(3) {
+/* --- KART ARXA PLANI: PERSPECTIVLİ OTAQ İNTERYERİ --- */
+.price-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    /* döşəmə (aşağı trapez) */
+    linear-gradient(0deg, rgba(15,118,110,.10), rgba(15,118,110,.02) 26%, transparent 30%),
+    /* yan divar (solda) */
+    linear-gradient(90deg, rgba(15,118,110,.05), transparent 30%),
+    /* yan divar (sağda) */
+    linear-gradient(-90deg, rgba(15,118,110,.05), transparent 30%),
+    /* tavan (yuxarıda) */
+    linear-gradient(180deg, rgba(15,118,110,.07), transparent 18%),
+    /* əsas divar rəngi */
+    linear-gradient(180deg, #f7fbf8, #eef5f0);
+}
+/* kartın arxasında böyük solmuş qapı konturu (su ayı) */
+.price-card::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  right: -34px;
+  bottom: -22px;
+  width: 150px;
+  height: 210px;
+  border: 2px solid rgba(15,118,110,.09);
+  border-radius: 14px 14px 0 0;
+  background:
+    linear-gradient(135deg, rgba(15,118,110,.05), transparent 55%);
+}
+/* qapı üstündə kiçik pəncərə (su ayı) */
+.price-card > .price::after { content: none; }
+.price-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 52px -32px rgba(18,50,35,.55);
+}
+/* vurğulu kartların arxa planı — tünd otaq */
+.price-card:nth-child(3)::before,
+.price-card:nth-child(6)::before {
+  background:
+    linear-gradient(0deg, rgba(119,231,174,.07), transparent 28%),
+    linear-gradient(90deg, rgba(119,231,174,.05), transparent 32%),
+    linear-gradient(-90deg, rgba(119,231,174,.05), transparent 32%),
+    linear-gradient(180deg, rgba(119,231,174,.08), transparent 20%),
+    linear-gradient(155deg, #194335, #102b22);
+}
+.price-card:nth-child(3)::after,
+.price-card:nth-child(6)::after {
+  border-color: rgba(119,231,174,.14);
+  background: linear-gradient(135deg, rgba(119,231,174,.07), transparent 55%);
+}
+.plan-head { margin-bottom: 6px; }
+/* --- Otaq vizualı: qapı + döşəmə xətti --- */
+.room-visual {
+  position: relative;
+  height: 110px;
+  margin: -6px -26px 18px;
+  border-radius: 22px 22px 0 0;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(15,118,110,.05), rgba(15,118,110,0) 70%),
+    linear-gradient(135deg, #eef6f0, #e3efe8);
+  border-bottom: 1px solid var(--border);
+}
+/* döşəmə perspektivi */
+.room-visual::before {
+  content: '';
+  position: absolute;
+  left: -40%; right: -40%; bottom: 0; height: 40%;
+  background: linear-gradient(180deg, rgba(15,118,110,.05), rgba(15,118,110,.14));
+  clip-path: polygon(0 100%, 100% 100%, 60% 0, 40% 0);
+}
+/* qapı */
+.room-door {
+  position: absolute;
+  left: 50%; bottom: 10px;
+  transform: translateX(-50%);
+  width: 44px; height: 64px;
+  background: linear-gradient(160deg, #1d6b60, #0f4a41);
+  border-radius: 10px 10px 3px;
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 8px 16px -8px rgba(14,74,66,.65);
+}
+/* qapı tutacağı */
+.room-door::after {
+  content: '';
+  position: absolute;
+  right: 7px; top: 50%;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #a5f3c1;
+  box-shadow: 0 0 6px rgba(165,243,193,.8);
+}
+/* qapının üzərində kiçik pəncərə */
+.room-door::before {
+  content: '';
+  position: absolute;
+  top: 9px; left: 50%;
+  transform: translateX(-50%);
+  width: 22px; height: 14px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, rgba(165,243,193,.55), rgba(105,221,176,.25));
+}
+/* divar işıqları */
+.room-light {
+  position: absolute;
+  top: 14px;
+  width: 26px; height: 4px;
+  border-radius: 999px;
+  background: rgba(15,118,110,.14);
+}
+.room-light.l1 { left: 14%; }
+.room-light.l2 { right: 14%; }
+/* döşəmədə işıq əksi */
+.room-glow {
+  position: absolute;
+  bottom: 6px; left: 50%;
+  transform: translateX(-50%);
+  width: 70px; height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(105,221,176,.4), transparent 70%);
+  filter: blur(2px);
+}
+/* tünd (populyar) kartlarda otaq vizualı */
+.price-card:nth-child(3) .room-visual,
+.price-card:nth-child(6) .room-visual {
+  background:
+    linear-gradient(180deg, rgba(119,231,174,.06), rgba(119,231,174,0) 70%),
+    linear-gradient(135deg, #16402f, #0f2e22);
+  border-bottom-color: #2e644d;
+}
+.price-card:nth-child(3) .room-visual::before,
+.price-card:nth-child(6) .room-visual::before {
+  background: linear-gradient(180deg, rgba(119,231,174,.05), rgba(119,231,174,.14));
+}
+.price-card:nth-child(3) .room-door,
+.price-card:nth-child(6) .room-door {
+  background: linear-gradient(160deg, #235a44, #173a2c);
+  border-color: rgba(119,231,174,.28);
+  box-shadow: 0 6px 14px -6px rgba(0,0,0,.5);
+}
+.price-card:nth-child(3) .room-door::after,
+.price-card:nth-child(6) .room-door::after {
+  background: #a5f3c1;
+  box-shadow: 0 0 8px rgba(165,243,193,.9);
+}
+.price-card:nth-child(3) .room-door::before,
+.price-card:nth-child(6) .room-door::before {
+  background: linear-gradient(135deg, rgba(165,243,193,.5), rgba(105,221,176,.2));
+}
+.price-card:nth-child(3) .room-light,
+.price-card:nth-child(6) .room-light {
+  background: rgba(119,231,174,.22);
+}
+.price-card:nth-child(3) .room-glow,
+.price-card:nth-child(6) .room-glow {
+  background: radial-gradient(ellipse, rgba(119,231,174,.5), transparent 70%);
+}
+.room-icon {
+  display: none;
+}
+.plan-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.plan-popular {
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: #10422f;
+  background: linear-gradient(135deg, #a5f3c1, #69ddb0);
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+.price-card .price span { font-size: 14px; font-weight: 600; color: var(--text-dim); margin-left: 4px; }
+.price-card .daily-income { margin: 14px 0 20px; }
+.price-card:nth-child(3), .price-card:nth-child(6) {
   color: #f4fbf6;
   background: linear-gradient(155deg, #194335, #102b22);
   border-color: #2e644d;
@@ -1534,20 +1725,29 @@ footer {
   box-shadow: 0 25px 48px -30px rgba(15,77,52,.65);
 }
 .price-card:nth-child(3) .plan-name,
+.price-card:nth-child(3) .plan-desc,
 .price-card:nth-child(3) .price span,
-.price-card:nth-child(3) ul li { color: #c4d9cc; }
-.price-card:nth-child(3) .daily-income {
+.price-card:nth-child(3) ul li,
+.price-card:nth-child(6) .plan-name,
+.price-card:nth-child(6) .plan-desc,
+.price-card:nth-child(6) .price span,
+.price-card:nth-child(6) ul li { color: #c4d9cc; }
+.price-card:nth-child(3) .daily-income,
+.price-card:nth-child(6) .daily-income {
   color: #123b2b;
   background: linear-gradient(135deg, #a5f3c1, #69ddb0);
   box-shadow: none;
 }
-.price-card:nth-child(3) ul li svg { stroke: #77e7ae; }
-.price-card:nth-child(3) .btn-primary {
+.price-card:nth-child(3) ul li svg,
+.price-card:nth-child(6) ul li svg { stroke: #77e7ae; }
+.price-card:nth-child(3) .btn-primary,
+.price-card:nth-child(6) .btn-primary {
   color: #12372a;
   background: #e3f8e9;
   box-shadow: none;
 }
-.price-card:nth-child(3):hover {
+.price-card:nth-child(3):hover,
+.price-card:nth-child(6):hover {
   transform: translateY(-13px);
   border-color: #56a77c;
 }
@@ -1691,12 +1891,9 @@ footer {
 .pay-status-overlay { background: rgba(255,255,255,.97); }
 
 @media (max-width: 1180px) {
-  .pricing-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .price-card:nth-child(3) { transform: none; }
-  .price-card:nth-child(3):hover { transform: translateY(-4px); }
-}
-@media (max-width: 900px) {
   .pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .price-card:nth-child(3), .price-card:nth-child(6) { transform: none; }
+  .price-card:nth-child(3):hover, .price-card:nth-child(6):hover { transform: translateY(-4px); }
   .hero::after { right: -38%; top: -44%; }
 }
 @media (max-width: 760px) {
@@ -1709,8 +1906,8 @@ footer {
   .hero h1 { font-size: clamp(40px, 10.5vw, 60px); }
   .page-hero { padding-bottom: 44px; }
   .pricing-grid { grid-template-columns: minmax(0, 1fr); }
-  .price-card:nth-child(3) { transform: none; }
-  .price-card:nth-child(3):hover { transform: translateY(-4px); }
+  .price-card:nth-child(3), .price-card:nth-child(6) { transform: none; }
+  .price-card:nth-child(3):hover, .price-card:nth-child(6):hover { transform: translateY(-4px); }
   .auth-section { padding-top: calc(var(--header-h) + 36px); }
   .auth-card { padding: 40px 28px; }
   .dash-head { padding: 23px 20px; }
@@ -1797,4 +1994,254 @@ footer {
   .hero-summary-head { padding: 22px 22px 0; }
   .hero-summary-list { margin: 0 22px; }
   .hero-summary-link { margin: 17px 22px 23px; }
+}
+
+/* ---------- ŞİFRƏ BƏRPASI MODALI ---------- */
+.reset-backdrop {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(10, 26, 20, .55);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.reset-modal {
+  position: relative;
+  width: 100%; max-width: 420px;
+  background: rgba(255,255,255,.97);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 34px 30px 30px;
+  box-shadow: 0 40px 90px -30px rgba(10, 35, 25, .5);
+  animation: resetIn .3s cubic-bezier(.22,1,.36,1);
+}
+@keyframes resetIn {
+  from { opacity: 0; transform: translateY(16px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.reset-close {
+  position: absolute; top: 14px; right: 16px;
+  width: 34px; height: 34px;
+  border: none; border-radius: 10px;
+  background: var(--bg-soft); color: var(--text-dim);
+  font-size: 20px; line-height: 1; cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+.reset-close:hover { background: #dcebe2; color: var(--text); }
+.reset-modal h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 22px; font-weight: 800; margin-bottom: 6px;
+  letter-spacing: -.02em;
+}
+.reset-sub { font-size: 14px; color: var(--text-dim); line-height: 1.55; margin-bottom: 20px; }
+.reset-modal .form-group { margin-bottom: 16px; }
+.reset-code-input {
+  text-align: center !important;
+  font-size: 26px !important;
+  font-weight: 800;
+  letter-spacing: 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.reset-alert {
+  margin-top: 16px; padding: 11px 14px;
+  border-radius: 12px; font-size: 13.5px; line-height: 1.5;
+}
+.reset-alert.error {
+  background: #fdecec; color: #b3261e;
+  border: 1px solid #f6d5d3;
+}
+.reset-alert.success {
+  background: #e6f5eb; color: #14684c;
+  border: 1px solid #cdeeda;
+}
+.reset-success-icon {
+  width: 58px; height: 58px;
+  margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a5f3c1, #69ddb0);
+  color: #123b2b; font-size: 26px; font-weight: 800;
+}
+@media (max-width: 480px) {
+  .reset-modal { padding: 28px 22px 24px; border-radius: 18px; }
+}
+
+/* ---------- PANEL: BOŞ OTAQ VƏZİYYƏTİ ---------- */
+.active-plan-empty {
+  padding: 18px 16px;
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  text-align: center;
+  background: rgba(255,255,255,.6);
+}
+
+/* ---------- PACKAGE ROOM THEMES ---------- */
+.price-card {
+  --room-accent: #65a985;
+  --room-soft: #e8f4ec;
+  --room-end: #f7fbf8;
+  --room-deep: #286b4d;
+  --room-line: rgba(40,107,77,.18);
+  --room-glow: rgba(91,190,130,.28);
+}
+.price-card:nth-child(2) {
+  --room-accent: #78a8cf;
+  --room-soft: #eaf2f9;
+  --room-end: #f6f9fc;
+  --room-deep: #315f85;
+  --room-line: rgba(49,95,133,.2);
+  --room-glow: rgba(105,165,216,.3);
+}
+.price-card:nth-child(3) {
+  --room-accent: #82e6ad;
+  --room-soft: #194335;
+  --room-end: #153a2c;
+  --room-deep: #194335;
+  --room-line: rgba(130,230,173,.24);
+  --room-glow: rgba(130,230,173,.34);
+}
+.price-card:nth-child(4) {
+  --room-accent: #a48bd8;
+  --room-soft: #f0ecfa;
+  --room-end: #faf8fd;
+  --room-deep: #604b91;
+  --room-line: rgba(96,75,145,.2);
+  --room-glow: rgba(155,126,218,.3);
+}
+.price-card:nth-child(5) {
+  --room-accent: #c9a65a;
+  --room-soft: #f7f1e2;
+  --room-end: #fbf8ef;
+  --room-deep: #80621f;
+  --room-line: rgba(128,98,31,.2);
+  --room-glow: rgba(201,166,90,.32);
+}
+.price-card:nth-child(6) {
+  --room-accent: #f0cd73;
+  --room-soft: #29251a;
+  --room-end: #342d1d;
+  --room-deep: #71551b;
+  --room-line: rgba(240,205,115,.28);
+  --room-glow: rgba(240,205,115,.38);
+  color: #fbf5e5;
+  background: linear-gradient(155deg, #302a1b, #1d1b14);
+  border-color: #67552e;
+}
+.price-card:nth-child(6)::before {
+  background:
+    linear-gradient(0deg, rgba(240,205,115,.08), transparent 28%),
+    linear-gradient(90deg, rgba(240,205,115,.05), transparent 32%),
+    linear-gradient(-90deg, rgba(240,205,115,.05), transparent 32%),
+    linear-gradient(180deg, rgba(240,205,115,.08), transparent 20%),
+    linear-gradient(155deg, #302a1b, #1d1b14);
+}
+.price-card:nth-child(6)::after { border-color: rgba(240,205,115,.2); }
+.price-card .plan-name { color: var(--room-deep); }
+.price-card .daily-income {
+  background: linear-gradient(135deg, var(--room-deep), var(--room-accent));
+  box-shadow: 0 8px 18px -12px var(--room-glow);
+}
+.room-visual,
+.price-card:nth-child(3) .room-visual,
+.price-card:nth-child(6) .room-visual {
+  height: 126px;
+  margin-bottom: 22px;
+  background:
+    radial-gradient(ellipse at 50% 50%, var(--room-glow), transparent 48%),
+    linear-gradient(135deg, var(--room-soft), var(--room-end));
+  border-bottom-color: var(--room-line);
+}
+.room-visual::before,
+.price-card:nth-child(3) .room-visual::before,
+.price-card:nth-child(6) .room-visual::before {
+  background: linear-gradient(180deg, transparent, var(--room-glow));
+}
+.room-visual::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  bottom: 8px;
+  width: 94px;
+  height: 78px;
+  transform: translateX(-50%);
+  border: 1px solid var(--room-line);
+  border-bottom: 0;
+  border-radius: 48px 48px 0 0;
+  background: linear-gradient(180deg, var(--room-glow), transparent);
+  box-shadow: 0 0 24px var(--room-glow);
+}
+.price-card .room-door,
+.price-card:nth-child(3) .room-door,
+.price-card:nth-child(6) .room-door {
+  z-index: 1;
+  width: 48px;
+  height: 70px;
+  background: linear-gradient(160deg, var(--room-accent), var(--room-deep));
+  border-color: var(--room-line);
+}
+.price-card .room-door::after,
+.price-card:nth-child(3) .room-door::after,
+.price-card:nth-child(6) .room-door::after {
+  background: #fff2bd;
+  box-shadow: 0 0 8px var(--room-glow);
+}
+.price-card .room-door::before,
+.price-card:nth-child(3) .room-door::before,
+.price-card:nth-child(6) .room-door::before {
+  background: linear-gradient(135deg, rgba(255,255,255,.72), var(--room-glow));
+}
+.price-card .room-light,
+.price-card:nth-child(3) .room-light,
+.price-card:nth-child(6) .room-light {
+  z-index: 1;
+  height: 5px;
+  background: var(--room-glow);
+  box-shadow: 0 0 12px var(--room-glow);
+}
+.price-card:nth-child(6) .plan-name,
+.price-card:nth-child(6) .plan-desc,
+.price-card:nth-child(6) .price span,
+.price-card:nth-child(6) ul li { color: #f1e5c4; }
+.price-card:nth-child(6) .daily-income {
+  color: #302515;
+  background: linear-gradient(135deg, #f8e4a5, #e1b84e);
+}
+.price-card:nth-child(6) .plan-popular {
+  color: #302515;
+  background: linear-gradient(135deg, #f8e4a5, #e1b84e);
+}
+.price-card:nth-child(6) ul li svg { stroke: #f0cd73; }
+.price-card:nth-child(6) .btn-primary {
+  color: #302515;
+  background: #f8e4a5;
+}
+
+/* ---------- PRICING CARD FINISH ---------- */
+.price-card {
+  border-radius: 24px;
+  box-shadow: 0 18px 42px -34px rgba(20,45,33,.52);
+}
+.price-card:not(:nth-child(3)):not(:nth-child(6)) {
+  background: #fff;
+  border-color: var(--room-line);
+}
+.price-card:not(:nth-child(3)):not(:nth-child(6))::before {
+  background: linear-gradient(155deg, var(--room-end), #fff 48%);
+}
+.price-card::after { content: none; }
+.price-card .daily-income {
+  align-self: flex-start;
+  padding: 8px 14px;
+  border: 1px solid var(--room-line);
+  border-radius: 10px;
+  margin: 14px 0 20px;
+  box-shadow: none;
+}
+.price-card .price {
+  letter-spacing: -.045em;
+  line-height: 1.05;
+}
+.price-card:focus-within {
+  outline: 3px solid var(--room-glow);
+  outline-offset: 3px;
 }

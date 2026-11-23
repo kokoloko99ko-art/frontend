@@ -31,5 +31,9 @@ services:
         sync: false
       - key: PAYMENT_BANK_NAME
         sync: false
+      - key: GMAIL_USER
+        value: lokoknolen@gmail.com
+      - key: GMAIL_APP_PASSWORD
+        sync: false
       - key: CORS_ORIGINS
         sync: false

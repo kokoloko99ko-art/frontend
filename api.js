@@ -95,6 +95,18 @@
       this.setToken(d.token);
       return d;
     },
+    forgotPassword: async function (email) {
+      if (!isBackendUp()) throw new Error('offline');
+      return apiFetch('/api/forgot-password', { method: 'POST', body: { email } });
+    },
+    verifyResetCode: async function (email, code) {
+      if (!isBackendUp()) throw new Error('offline');
+      return apiFetch('/api/verify-reset-code', { method: 'POST', body: { email, code } });
+    },
+    resetPassword: async function (email, code, newPassword) {
+      if (!isBackendUp()) throw new Error('offline');
+      return apiFetch('/api/reset-password', { method: 'POST', body: { email, code, newPassword } });
+    },
     logout: async function () {
       try {
         if (isBackendUp() && API.token) await apiFetch('/api/logout', { method: 'POST' });
